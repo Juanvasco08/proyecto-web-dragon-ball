@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juan Manuel | Portafolio & Dragon Ball Universe</title>
+    
+    <!-- Tailwind CSS -->
+<script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    
+    <!-- Tipografías Profesionales -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Hoja de estilos personalizada -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-950 bg-tech-grid text-slate-100 min-h-screen flex flex-col selection:bg-amber-500 selection:text-slate-950 overflow-x-hidden">
+
+    <!-- CAPA DE ILUMINACIÓN AMBIENTAL (Luces difuminadas en el fondo) -->
+    <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div class="absolute -top-48 -left-48 w-[500px] h-[500px] bg-amber-500/15 rounded-full blur-[120px]"></div>
+        <div class="absolute top-1/3 -right-48 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px]"></div>
+        <div class="absolute -bottom-48 left-1/3 w-[500px] h-[500px] bg-orange-600/10 rounded-full blur-[120px]"></div>
+    </div>
+
+    <!-- BARRA DE NAVEGACIÓN FLOTANTE (Desktop + Móvil) -->
+    <header class="sticky top-0 z-50 border-b border-white/5 bg-slate-950/80 backdrop-blur-xl">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logo / Marca Personal -->
+            <a href="#inicio" data-target="inicio" class="nav-trigger flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center font-display font-bold text-slate-950 text-lg shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
+                    JV
+                </div>
+                <span class="font-display text-xl font-bold tracking-tight text-white">
+                    DEV<span class="text-amber-400">.STUDIO</span>
+                </span>
+            </a>
+
+            <!-- Enlaces Desktop -->
+            <ul class="hidden md:flex items-center gap-1.5 bg-slate-900/60 p-1.5 rounded-2xl border border-white/5">
+                <li>
+                    <button data-target="inicio" class="nav-btn px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300">
+                        Inicio
+                    </button>
+                </li>
+                <li>
+                    <button data-target="sobre-mi" class="nav-btn px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300">
+                        Sobre Mí
+                    </button>
+                </li>
+                <li>
+                    <button data-target="juego" class="nav-btn px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300">
+                        Reto Anti-Hack
+                    </button>
+                </li>
+                <li>
+                    <button data-target="extra" class="nav-btn px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300">
+                        Innovación
+                    </button>
+                </li>
+                <li>
+                    <button data-target="dragon-ball" class="nav-btn px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                        Dragon Ball API
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Botón Hamburguesa (Solo visible en celulares) -->
+            <button id="mobile-menu-btn" aria-label="Abrir menú" class="md:hidden p-2.5 rounded-xl bg-slate-900 border border-white/10 text-slate-300 hover:text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </nav>
+
+        <!-- Menú Desplegable Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-white/5 bg-slate-950/95 backdrop-blur-xl px-4 py-4 space-y-2">
+            <button data-target="inicio" class="nav-btn block w-full text-left px-4 py-3 rounded-xl text-sm font-medium">Inicio</button>
+            <button data-target="sobre-mi" class="nav-btn block w-full text-left px-4 py-3 rounded-xl text-sm font-medium">Sobre Mí</button>
+            <button data-target="juego" class="nav-btn block w-full text-left px-4 py-3 rounded-xl text-sm font-medium">Reto Anti-Hack</button>
+            <button data-target="extra" class="nav-btn block w-full text-left px-4 py-3 rounded-xl text-sm font-medium">Innovación</button>
+            <button data-target="dragon-ball" class="nav-btn block w-full text-left px-4 py-3 rounded-xl text-sm font-medium">Dragon Ball API</button>
+        </div>
+    </header>
+
+    <!-- CONTENEDOR GLOBAL DE ALERTAS FLOTANTES (TOASTS) -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- CONTENEDOR PRINCIPAL DE LAS 5 SECCIONES -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <!-- SECCIÓN 1: INICIO (BENTO GRID INTERACTIVO) -->
+        <section id="inicio" class="page-section block">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- Tarjeta Principal (Hero - Ocupa 8 columnas en pantallas grandes) -->
+                <div class="lg:col-span-8 glass-panel rounded-3xl p-8 sm:p-12 flex flex-col justify-between relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
+                    
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold tracking-wide uppercase mb-6">
+                            <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+                            Arquitectura Web Modular ES6+
+                        </div>
+                        
+                        <h1 class="font-display text-4xl sm:text-6xl font-bold tracking-tight text-white leading-[1.1] mb-6">
+                            Construyendo experiencias web <br>
+                            <span id="typewriter-text" class="bg-gradient-to-r from-amber-400 via-orange-400 to-cyan-400 bg-clip-text text-transparent">innovadoras y seguras.</span>
+                            <span class="animate-pulse text-amber-400">|</span>
+                        </h1>
+                        
+                        <p class="text-slate-400 text-lg max-w-2xl leading-relaxed mb-8">
+                            Bienvenido a mi ecosistema digital. Un proyecto diseñado desde cero combinando interfaces modernas con <strong class="text-slate-200">Tailwind CSS</strong>, seguridad en cliente con <strong class="text-slate-200">JavaScript Modular</strong> y conexión en tiempo real con el universo de <strong class="text-slate-200">Dragon Ball</strong>.
+                        </p>
+                    </div>
+
+                    <!-- Botones de Acción Rápida -->
+                    <div class="flex flex-wrap items-center gap-4">
+                        <button data-target="dragon-ball" class="nav-trigger px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 font-semibold text-sm hover:shadow-lg hover:shadow-amber-500/25 hover:-translate-y-0.5 transition-all cursor-pointer">
+                            Explorar API Dragon Ball &rarr;
+                        </button>
+                        <button data-target="juego" class="nav-trigger px-6 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white font-semibold text-sm hover:bg-white/10 hover:-translate-y-0.5 transition-all cursor-pointer">
+                            Probar Reto Anti-Hack
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Columna Lateral Derecha (4 columnas: Estado de API + Perfil Rápido) -->
+                <div class="lg:col-span-4 flex flex-col gap-6">
+                    
+                    <!-- Monitor en Vivo de la API -->
+                    <div class="glass-panel rounded-3xl p-6
