@@ -1,0 +1,57 @@
+/* 1. Fondo de cuadrícula tecnológica sutil (Estilo ingeniería/blueprint) */
+.bg-tech-grid {
+    background-size: 40px 40px;
+    background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+/* 2. Efecto Cristal Esmerilado Premium (Glassmorphism) */
+.glass-panel {
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-panel:hover {
+    border-color: rgba(255, 255, 255, 0.16);
+}
+
+/* 3. Animación cinemática al cambiar entre pestañas del menú */
+@keyframes sectionReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(18px) scale(0.99);
+        filter: blur(4px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+.animate-reveal {
+    animation: sectionReveal 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* 4. Barra de desplazamiento (Scrollbar) personalizada */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #f59e0b;
+}
