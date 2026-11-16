@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reto Anti-Hack | Juan Manuel</title>
+
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="juego" class="bg-slate-950 bg-tech-grid text-slate-100 min-h-screen flex flex-col selection:bg-amber-500 selection:text-slate-950 overflow-x-hidden">
+
+    <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div class="absolute -top-48 -left-48 w-[500px] h-[500px] bg-amber-500/15 rounded-full blur-[120px]"></div>
+        <div class="absolute top-1/3 -right-48 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px]"></div>
+    </div>
+
+    <div id="site-header"></div>
+
+    <main class="flex-grow max-w-2xl w-full mx-auto px-4 sm:px-6 py-12">
+        <section class="animate-reveal glass-panel rounded-3xl p-8 sm:p-12 text-center">
+
+            <div class="inline-flex px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold tracking-wide uppercase mb-6">
+                Reto Anti-Hack
+            </div>
+
+            <h1 class="font-display text-3xl sm:text-4xl font-bold text-white mb-3">50 clicks. Sin trampas.</h1>
+            <p class="text-slate-400 mb-8">Solo cuentan los clicks reales y a velocidad humana. Los scripts y los autoclickers no pasan.</p>
+
+            <p id="game-counter" class="font-display text-7xl font-bold text-amber-400" aria-live="polite">0</p>
+            <p class="text-sm text-slate-500 mb-6">de <span id="game-goal">50</span> clicks</p>
+
+            <div id="game-bar" role="progressbar" aria-label="Progreso del reto" aria-valuemin="0" aria-valuemax="50" aria-valuenow="0" class="h-3 rounded-full bg-slate-800 overflow-hidden mb-8">
+                <div id="game-progress" class="h-full w-0 bg-gradient-to-r from-amber-500 to-orange-500 transition-all duration-150"></div>
+            </div>
+
+            <button id="game-button" type="button" class="w-full sm:w-auto px-10 py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 font-bold text-lg hover:shadow-lg hover:shadow-amber-500/25 active:scale-95 transition-all select-none">
+                ¡Haz click!
+            </button>
+
+            <p id="game-status" class="mt-5 text-sm text-slate-400 min-h-5" aria-live="polite"></p>
+
+            <!-- Aparece al terminar los clicks -->
+            <div id="game-final" class="hidden mt-8 pt-8 border-t border-white/10">
+                <h2 class="font-display text-2xl font-bold text-white mb-5">¿Usted sí valora su tiempo?</h2>
+                <div class="flex justify-center gap-3">
+                    <button type="button" data-answer="si" class="px-6 py-3 rounded-xl bg-white/5 border border-white/10 font-semibold hover:bg-white/10 transition-all">Sí</button>
+                    <button type="button" data-answer="no" class="px-6 py-3 rounded-xl bg-white/5 border border-white/10 font-semibold hover:bg-white/10 transition-all">No</button>
+                </div>
