@@ -55,3 +55,52 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #f59e0b;
 }
+
+/* 5. Juego: aura y animaciones de Goku */
+.goku-aura {
+    background: radial-gradient(circle, var(--aura, #38bdf8) 0%, transparent 65%);
+    filter: blur(18px);
+    transition: background 0.4s ease;
+    animation: auraPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes auraPulse {
+    0%, 100% { transform: scale(0.9); opacity: 0.4; }
+    50% { transform: scale(1.15); opacity: 0.8; }
+}
+
+.goku-img {
+    animation: gokuFloat 3s ease-in-out infinite;
+}
+
+@keyframes gokuFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* Golpe en cada click */
+.goku-hit {
+    animation: gokuHit 0.15s ease;
+}
+
+@keyframes gokuHit {
+    0% { transform: translateX(0) scale(1); }
+    30% { transform: translateX(-8px) rotate(-3deg) scale(1.05); }
+    60% { transform: translateX(8px) rotate(3deg) scale(1.05); }
+    100% { transform: translateX(0) scale(1); }
+}
+
+/* Explosión de poder al transformarse */
+.goku-power {
+    animation: gokuPower 0.7s ease-out;
+}
+
+@keyframes gokuPower {
+    0% { transform: scale(1); filter: brightness(1); }
+    30% { transform: scale(1.25); filter: brightness(2.2); }
+    100% { transform: scale(1); filter: brightness(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .goku-aura, .goku-img, .goku-hit, .goku-power { animation: none; }
+}
