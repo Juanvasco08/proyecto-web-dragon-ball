@@ -14,6 +14,7 @@ const LABELS = {
 };
 
 // ---------- Fórmula del Ki ----------
+const fmt = (n) => n.toLocaleString("es-CO"); // 180843681 → "180.843.681"
 
 const clamp01 = (n) => (Number.isFinite(n) ? Math.min(1, Math.max(0, n)) : 0); // entre 0 y 1; si no es un número válido, devuelve 0
 
@@ -349,6 +350,28 @@ export function initExtra() {
       if (i + 1 < TESTS.length) runTest(i + 1);
       else finish();
     });
+  }
+
+  // ---------- Pantalla de resultado ----------
+
+  function showResult(ki, rank) {
+    showScreen("resultado");
+
+    const kiEl = root.querySelector("#ki-final");
+    kiEl.textContent = fmt(ki);
+    kiEl.classList.remove("ki-reveal");
+    void kiEl.offsetWidth; // fuerza al navegador a reiniciar la animación
+    kiEl.classList.add("ki-reveal");
+
+    root.querySelector("#ki-rank").textContent = rank;
+
+    // Desglose del rendimiento en cada prueba
+    const { reflex, energy, math } = results;
+    root.querySelector("#res-reflex").textContent = reflex != null ? `${reflex} ms` : "—";
+    root.querySelector("#res-energy").textContent = energy != null ? `${energy} pulsos` : "—";
+    root.querySelector("#res-math").textContent = math
+      ? math.correct ? `✔ ${(math.ms / 1000).toFixed(1)} s` : "✘ falló"
+      : "—";
   }
 
     function finish() {
