@@ -61,7 +61,9 @@ export function initExtra() {
       raf = requestAnimationFrame(frame);
     };
     raf = requestAnimationFrame(frame);
-    track(() => cancelAnimationFrame(raf));
+    const stop = () => cancelAnimationFrame(raf);
+    track(stop);
+    return stop; // permite detener la cuenta antes de tiempo
   };
 
   // ---------- Pantallas ----------
