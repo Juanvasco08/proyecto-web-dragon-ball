@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovación | Juan Manuel</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="innovacion" class="bg-slate-950 bg-tech-grid text-slate-100 min-h-screen flex flex-col selection:bg-amber-500 selection:text-slate-950 overflow-x-hidden">
+
+    <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div class="absolute -top-48 -left-48 w-[500px] h-[500px] bg-amber-500/15 rounded-full blur-[120px]"></div>
+        <div class="absolute top-1/3 -right-48 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px]"></div>
+    </div>
+
+    <div id="site-header"></div>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <section id="extra" class="animate-reveal flex flex-col items-center">
+
+            <header class="text-center mb-10 max-w-2xl">
+                <p class="text-amber-400 text-xs font-semibold tracking-widest uppercase mb-3">Laboratorio de innovación</p>
+                <h1 class="font-display text-4xl sm:text-5xl font-bold text-white mb-4">Carnet Holográfico 3D</h1>
+                <p class="text-slate-400">Mueve el mouse sobre la tarjeta (o desliza el dedo en el celular) y mira cómo reacciona la luz.</p>
+            </header>
+
+            <!-- Escenario 3D -->
+            <div data-holo-card class="holo-stage w-full max-w-sm">
+                <article data-holo-inner class="holo-card glass-panel rounded-3xl p-6 relative overflow-hidden" aria-label="Carnet de desarrollador">
+
+                    <!-- Capas de luz (las controla extra.js) -->
+                    <div data-holo-glare class="holo-glare" aria-hidden="true"></div>
+                    <div class="holo-rainbow" aria-hidden="true"></div>
+
+                    <!-- Contenido -->
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-6">
+                            <span class="text-[11px] font-semibold tracking-widest uppercase text-cyan-300">Dev ID · 001</span>
+                            <span id="holo-status" class="text-[11px] px-2.5 py-1 rounded-full bg-slate-800 text-slate-300">En espera</span>
+                        </div>
+
+                        <div class="holo-layer flex items-center gap-4 mb-6">
+                            <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-400 via-orange-500 to-rose-600 flex items-center justify-center font-display font-bold text-3xl text-slate-950 shadow-xl shadow-orange-500/20">JV</div>
+                            <div>
+                                <h2 class="font-display text-xl font-bold text-white leading-tight">Juan Manuel<br>Vasco Vargas</h2>
+                                <p class="text-amber-400 text-sm mt-1">Programador · Emprendedor</p>
+                            </div>
+                        </div>
+
+                        <div class="holo-layer mb-6">
+                            <div class="flex justify-between text-xs mb-2">
+                                <span class="text-slate-400 uppercase tracking-wider">Nivel de Ki</span>
+                                <span id="holo-ki-text" class="text-white font-semibold">9,000</span>
+                            </div>
+                            <div class="h-2.5 rounded-full bg-slate-800 overflow-hidden">
+                                <div id="holo-ki-bar" class="h-full w-[30%] rounded-full bg-gradient-to-r from-amber-400 to-cyan-400 transition-all duration-700"></div>
+                            </div>
+                        </div>
+
+                        <div class="holo-layer grid grid-cols-3 gap-3 mb-6 text-center">
+                            <div class="rounded-xl bg-slate-900/60 border border-white/5 p-3">
+                                <p id="holo-level" class="font-display text-xl font-bold text-white">1</p>
+                                <p class="text-[10px] text-slate-500 uppercase tracking-wider">Nivel</p>
+                            </div>
+                            <div class="rounded-xl bg-slate-900/60 border border-white/5 p-3">
+                                <p class="font-display text-xl font-bold text-white">3</p>
+                                <p class="text-[10px] text-slate-500 uppercase tracking-wider">Lenguajes</p>
+                            </div>
+                            <div class="rounded-xl bg-slate-900/60 border border-white/5 p-3">
+                                <p class="font-display text-xl font-bold text-white">1</p>
+                                <p class="text-[10px] text-slate-500 uppercase tracking-wider">Empresa</p>
+                            </div>
+                        </div>
+
+                        <!-- Botones de control -->
+                        <div class="holo-layer grid grid-cols-1 gap-2">
+                            <button type="button" data-holo-action="protocolo" class="px-4 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 font-semibold text-sm hover:shadow-lg hover:shadow-amber-500/25 transition-all">
+                                Activar Protocolo Z
+                            </button>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button type="button" data-holo-action="nivel" class="px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white font-semibold text-sm hover:bg-white/10 transition-all">
+                                    Cambiar de nivel
+                                </button>
+                                <button type="button" data-holo-action="verificar" class="px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white font-semibold text-sm hover:bg-white/10 transition-all">
+                                    Verificar código
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- Notificaciones (las usa extra.js) -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-3 pointer-events-none" aria-live="polite"></div>
+
+    <div id="site-footer"></div>
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
