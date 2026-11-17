@@ -80,8 +80,73 @@ export function initExtra() {
   // ---------- Pruebas (de momento son de relleno; se reemplazan en los pasos 4, 5 y 6) ----------
   // Cada una recibe `next` y debe llamarlo con su resultado cuando termine.
 
-  function runReflejos(next) { after(1000, () => next(null)); }
-  function runEnergia(next) { after(1000, () => next(null)); }
+  // PRUEBA 1: Reflejos. Resultado: tiempo de reacción en milisegundos.
+  function runReflejos(next) {
+    const target = root.querySelector("#reflex-target");
+    const msg = root.querySelector("#reflex-msg");
+    const out = root.querySelector("#reflex-result");
+
+    let state = "wait"; // wait → go → done (o early si se adelanta)
+    let t0 = 0;         // instante exacto en que el núcleo se puso verde
+    let delayId = 0;    // temporizador de la espera aleatoria
+    let raf = 0;        // animación del cronómetro en vivo
+
+    // Si el usuario sale de esta pantalla, se cancela todo lo pendiente
+    track(() => {
+      clearTimeout(delayId);
+      cancelAnimationFrame(raf);
+    });
+
+    const setState = (s, label) => {
+      state = s;
+      target.dataset.state = s; // el CSS pinta el botón según este atributo
+      target.textContent = label;
+    };
+
+    const rate = (ms) =>
+      ms < 200 ? "¡Reflejos de Saiyajin!" :
+      ms < 300 ? "Muy rápido" :
+      ms < 450 ? "Normal" : "Lento… ¡a entrenar!";
+
+    // Prepara la ronda: espera un tiempo aleatorio entre 1.5 y 4 segundos
+    function arm() {
+      setState("wait", "ESPERA");
+      msg.textContent = "Espera a que el núcleo se ponga verde…";
+      out.textContent = "";
+      timerEl.textContent = "0.00 s";
+
+      delayId = setTimeout(() => {
+        setState("go", "¡YA!");
+        msg.textContent = "¡Ahora! ¡Haz clic!";
+        t0 = performance.now();
+
+        const tick = () => {
+          timerEl.textContent = `${((performance.now() - t0) / 1000).toFixed(2)} s`;
+          raf = requestAnimationFrame(tick);
+        };
+        raf = requestAnimationFrame(tick);
+      }, 1500 + Math.random() * 2500);
+    }
+
+    on(target, "click", () => {
+      if (state === "wait") {
+        // Se adelantó: cancelamos la señal y repetimos la ronda
+        clearTimeout(delayId);
+        setState("early", "MUY PRONTO");
+        msg.textContent = "¡Te adelantaste! Inténtalo de nuevo…";
+        after(1400, arm);
+      } else if (state === "go") {
+        cancelAnimationFrame(raf);
+        const ms = Math.round(performance.now() - t0);
+        setState("done", `${ms} ms`);
+        msg.textContent = "¡Registrado!";
+        out.textContent = `${ms} ms · ${rate(ms)}`;
+        after(1500, () => next(ms)); // pasa a la Prueba 2 con el resultado
+      }
+    });
+
+    arm();
+  }  function runEnergia(next) { after(1000, () => next(null)); }
   function runCalculo(next) { after(1000, () => next(null)); }
 
   const runners = [runReflejos, runEnergia, runCalculo];
