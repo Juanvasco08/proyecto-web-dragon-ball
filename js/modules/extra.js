@@ -15,7 +15,7 @@ const LABELS = {
 
 // ---------- Fórmula del Ki ----------
 
-const clamp01 = (n) => Math.min(1, Math.max(0, n)); // fuerza un número a quedar entre 0 y 1
+const clamp01 = (n) => (Number.isFinite(n) ? Math.min(1, Math.max(0, n)) : 0); // entre 0 y 1; si no es un número válido, devuelve 0
 
 const WEIGHTS = { reflex: 0.35, energy: 0.35, math: 0.3 }; // cuánto pesa cada prueba (suman 1)
 const KI_MIN = 5000;  // Ki de quien saca 0 en todo
@@ -351,10 +351,10 @@ export function initExtra() {
     });
   }
 
-  function finish() {
+    function finish() {
     showScreen("scan");
+    after(1500, () => showScreen("resultado"));
     console.log("Resultados:", results, "→", computeKi(results)); // temporal: se quita en el 7.2
-    //     after(1500, () => showScreen("resultado"));
   }
 
   function startCircuit() {
