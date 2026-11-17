@@ -8,9 +8,9 @@ export const FORMS = Object.freeze([
   { name: "Super Saiyan",       from: 7,  color: "#facc15", match: /^(?!.*(2|3|4|god|dios|blue|azul|ros)).*(super saiyan|super saiyajin|ssj)/i },
   { name: "Super Saiyan 2",     from: 14, color: "#fde047", match: /(super saiyan|super saiyajin|ssj)\s*2/i },
   { name: "Super Saiyan 3",     from: 21, color: "#f59e0b", match: /(super saiyan|super saiyajin|ssj)\s*3/i },
-  { name: "Super Saiyan God",   from: 28, color: "#ef4444", match: /^(?!.*(blue|azul)).*(god|dios)/i },
-  { name: "Super Saiyan Blue",  from: 36, color: "#3b82f6", match: /(blue|azul)/i },
-  { name: "Ultra Instinto",     from: 44, color: "#e2e8f0", match: /(ultra|instinto|instinct)/i },
+  { name: "Super Saiyan 4",     from: 28, color: "#ef4444", match: /(super saiyan|super saiyajin|ssj)\s*4/i },  
+  { name: "Super Saiyan Blue",  from: 35, color: "#3b82f6", match: /(blue|azul|ssjb)/i },
+  { name: "Ultra Instinto",     from: 42, color: "#e2e8f0", match: /(ultra|instinto|instinct)/i },
 ]);
 
 export async function loadFormImages() {
