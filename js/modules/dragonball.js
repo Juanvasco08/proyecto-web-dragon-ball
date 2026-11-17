@@ -66,17 +66,75 @@ function card(c) {
     </button>`;
 }
 
+function detail(c) {
+  const forms = (c.transformations ?? [])
+    .map(
+      (t) => `
+      <li class="glass-panel rounded-xl p-3 text-center">
+        <img src="${esc(t.image)}" alt="${esc(t.name)}" loading="lazy" class="h-28 w-full object-contain mb-2">
+        <p class="text-sm font-semibold text-white">${esc(t.name)}</p>
+        <p class="text-xs text-amber-400">Ki: ${esc(translateKi(t.ki))}</p>
+      </li>`
+    )
+    .join("");
+
+  const planet = c.originPlanet
+    ? `<h3 class="font-display text-lg font-bold text-white mt-8 mb-2">Planeta de origen: ${esc(c.originPlanet.name)}</h3>
+       <p class="text-sm text-slate-400">${esc(c.originPlanet.description)}</p>`
+    : "";
+
+  return `
+    <div class="grid gap-6 md:grid-cols-[240px_1fr]">
+      <img src="${esc(c.image)}" alt="${esc(c.name)}" class="h-64 w-full object-contain">
+      <div>
+        <h2 id="db-modal-title" class="font-display text-3xl font-bold text-white">${esc(c.name)}</h2>
+        <p class="text-sm text-slate-400 mt-1">${esc(tr(RACES, c.race))} · ${esc(tr(GENDERS, c.gender))} · ${esc(tr(AFFILIATIONS, c.affiliation))}</p>
+        <p class="text-amber-400 mt-3">Ki: ${esc(translateKi(c.ki))}</p>
+        <p class="text-cyan-400">Ki máximo: ${esc(translateKi(c.maxKi))}</p>
+        <p class="text-slate-300 mt-4 leading-relaxed">${esc(c.description)}</p>
+      </div>
+    </div>
+    ${forms ? `<h3 class="font-display text-lg font-bold text-white mt-8 mb-3">Transformaciones</h3>
+    <ul class="grid gap-3 grid-cols-2 sm:grid-cols-3">${forms}</ul>` : ""}
+    ${planet}`;
+}
+
 export function initDragonBall() {
   const form = document.getElementById("db-form");
   const input = document.getElementById("db-search");
   const grid = document.getElementById("db-grid");
   const status = document.getElementById("db-status");
+  const modal = document.getElementById("db-modal");
+  const modalBody = document.getElementById("db-modal-body");
+  const modalClose = document.getElementById("db-modal-close");
 
+  // Estos elementos solo existen en dragon-ball.html
+  if (!form || !input || !grid || !status || !modal || !modalBody || !modalClose) return;
   // Estos elementos solo existen en dragon-ball.html
   if (!form || !input || !grid || !status) return;
 
   let lastRequest = 0;
 
+    async function openModal(id) {
+    modalBody.innerHTML = `<p class="py-16 text-center text-slate-400">Cargando...</p>`;
+    modal.showModal();
+    try {
+      modalBody.innerHTML = detail(await fetchJson(`${API}/${encodeURIComponent(id)}`));
+    } catch (error) {
+      console.error(error);
+      modalBody.innerHTML = `<p class="py-16 text-center text-red-400">No se pudo cargar el detalle.</p>`;
+    }
+  }
+
+  grid.addEventListener("click", (event) => {
+    const btn = event.target.closest("[data-id]");
+    if (btn) openModal(btn.dataset.id);
+  });
+
+  modalClose.addEventListener("click", () => modal.close());
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) modal.close(); // click fuera de la ventana
+  });
   async function load(name = "") {
     const requestId = ++lastRequest;
     status.textContent = "Cargando guerreros...";
