@@ -210,8 +210,88 @@ export function initExtra() {
     on(core, "contextmenu", (e) => e.preventDefault());
   }
   
-  function runCalculo(next) { after(1000, () => next(null)); }
+  // PRUEBA 3: Control mental. Resultado: { correct, ms, errors }
+  function runCalculo(next) {
+    const DURATION = 6000;
+    const qEl = root.querySelector("#math-question");
+    const form = root.querySelector("#math-form");
+    const input = root.querySelector("#math-input");
+    const bar = root.querySelector("#math-bar");
 
+    const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+    // Genera una operación aleatoria y su respuesta (la respuesta solo vive en esta función)
+    function makeQuestion() {
+      const kind = randInt(0, 2);
+      if (kind === 0) {
+        const a = randInt(10, 99), b = randInt(10, 99);
+        return { text: `${a} + ${b}`, answer: a + b };
+      }
+      if (kind === 1) {
+        const a = randInt(30, 99), b = randInt(10, a); // nunca da negativo
+        return { text: `${a} − ${b}`, answer: a - b };
+      }
+      const a = randInt(6, 15), b = randInt(3, 12);
+      return { text: `${a} × ${b}`, answer: a * b };
+    }
+
+    const { text, answer } = makeQuestion();
+    let finished = false;
+    let errors = 0;
+    let flashId = 0;
+    const t0 = performance.now();
+
+    // Estado inicial de la pantalla
+    qEl.textContent = text;
+    input.value = "";
+    input.disabled = false;
+    bar.style.width = "100%";
+    timerEl.textContent = "6.00 s";
+    track(() => clearTimeout(flashId));
+
+    const stop = countdown(
+      DURATION,
+      (left) => { bar.style.width = `${left * 100}%`; },
+      () => finish(false) // se acabó el tiempo
+    );
+
+    function finish(correct) {
+      if (finished) return;
+      finished = true;
+      stop(); // detiene el cronómetro
+      input.disabled = true;
+      qEl.textContent = correct ? "✔ ¡Correcto!" : `✘ Era ${answer}`;
+      const ms = Math.min(Math.round(performance.now() - t0), DURATION);
+      after(1500, () => next({ correct, ms, errors }));
+    }
+
+    // Solo deja escribir dígitos (y el signo menos)
+    on(input, "input", () => {
+      input.value = input.value.replace(/[^0-9-]/g, "");
+    });
+
+    on(form, "submit", (e) => {
+      e.preventDefault();
+      if (finished) return;
+
+      const raw = input.value.trim();
+      if (raw === "") return;
+
+      if (Number(raw) === answer) {
+        finish(true);
+      } else {
+        // Respuesta mala: se puede reintentar mientras quede tiempo
+        errors++;
+        input.value = "";
+        input.classList.add("border-red-400");
+        clearTimeout(flashId);
+        flashId = setTimeout(() => input.classList.remove("border-red-400"), 400);
+      }
+    });
+
+    input.focus();
+  }
+  
   const runners = [runReflejos, runEnergia, runCalculo];
 
   // ---------- Flujo del circuito ----------
