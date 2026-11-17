@@ -374,10 +374,34 @@ export function initExtra() {
       : "—";
   }
 
-    function finish() {
+  // ---------- Escaneo con contador animado ----------
+
+  // Cuenta de `from` a `to` en `ms` milisegundos
+  function animateNumber(el, from, to, ms, onEnd) {
+    const start = performance.now();
+    let raf;
+    const frame = (now) => {
+      const t = clamp01((now - start) / ms);
+      const eased = 1 - (1 - t) ** 3;           // arranca rápido y frena al final
+      const value = from * (to / from) ** eased; // sube por "órdenes de magnitud"
+      el.textContent = fmt(Math.round(value));
+      if (t < 1) raf = requestAnimationFrame(frame);
+      else onEnd?.();
+    };
+    raf = requestAnimationFrame(frame);
+    track(() => cancelAnimationFrame(raf));
+  }
+
+  function finish() {
     showScreen("scan");
-    after(1500, () => showScreen("resultado"));
-    console.log("Resultados:", results, "→", computeKi(results)); // temporal: se quita en el 7.2
+
+    const { ki, rank } = computeKi(results);
+    const counter = root.querySelector("#ki-counter");
+    counter.textContent = fmt(KI_MIN);
+
+    animateNumber(counter, KI_MIN, ki, 2500, () => {
+      after(600, () => showResult(ki, rank)); // pausa breve y revela el resultado
+    });
   }
 
   function startCircuit() {
