@@ -13,6 +13,52 @@ const LABELS = {
   resultado: "COMPLETADO",
 };
 
+// ---------- Fórmula del Ki ----------
+
+const clamp01 = (n) => Math.min(1, Math.max(0, n)); // fuerza un número a quedar entre 0 y 1
+
+const WEIGHTS = { reflex: 0.35, energy: 0.35, math: 0.3 }; // cuánto pesa cada prueba (suman 1)
+const KI_MIN = 5000;  // Ki de quien saca 0 en todo
+const KI_DECADES = 6; // con puntaje perfecto: 5.000 × 10^6 = 5.000 millones
+
+// De mayor a menor: se asigna el primer rango cuyo mínimo alcances
+const RANKS = [
+  { min: 0.9,  name: "Nivel Dios" },
+  { min: 0.75, name: "Súper Saiyajin Dios" },
+  { min: 0.55, name: "Súper Saiyajin" },
+  { min: 0.35, name: "Guerrero de Élite" },
+  { min: 0.15, name: "Guerrero de Clase Baja" },
+  { min: 0,    name: "Terrícola Promedio" },
+];
+
+// Cada prueba se convierte en un puntaje entre 0 y 1
+const scoreReflex = (ms) => (ms == null ? 0 : clamp01((600 - ms) / 450)); // 150 ms = 1 · 600 ms o más = 0
+const scoreEnergy = (pulses) => (pulses == null ? 0 : clamp01(pulses / 60)); // 60 pulsos = 1
+const scoreMath = (m) => {
+  if (!m || !m.correct) return 0;                                   // fallar = 0
+  return clamp01(0.5 + 0.5 * (1 - m.ms / 6000) - 0.12 * m.errors);  // acertar = 0.5 + bono por rapidez − 0.12 por error
+};
+
+function computeKi(results) {
+  const scores = {
+    reflex: scoreReflex(results.reflex),
+    energy: scoreEnergy(results.energy),
+    math: scoreMath(results.math),
+  };
+
+  // Promedio ponderado: un número entre 0 y 1
+  const total =
+    scores.reflex * WEIGHTS.reflex +
+    scores.energy * WEIGHTS.energy +
+    scores.math * WEIGHTS.math;
+
+  // Escala exponencial: cada punto ganado multiplica el Ki, no lo suma
+  const ki = Math.round(KI_MIN * 10 ** (total * KI_DECADES));
+  const rank = RANKS.find((r) => total >= r.min).name;
+
+  return { scores, total, ki, rank };
+}
+
 export function initExtra() {
   const root = document.getElementById("extra");
   if (!root) return; // esta página no es innovacion.html: no hacemos nada
@@ -291,7 +337,7 @@ export function initExtra() {
 
     input.focus();
   }
-  
+
   const runners = [runReflejos, runEnergia, runCalculo];
 
   // ---------- Flujo del circuito ----------
@@ -307,8 +353,8 @@ export function initExtra() {
 
   function finish() {
     showScreen("scan");
-    console.log("Resultados del circuito:", results); // temporal: se quita en el Paso 7
-    after(1500, () => showScreen("resultado"));
+    console.log("Resultados:", results, "→", computeKi(results)); // temporal: se quita en el 7.2
+    //     after(1500, () => showScreen("resultado"));
   }
 
   function startCircuit() {
