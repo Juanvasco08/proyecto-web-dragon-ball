@@ -146,7 +146,68 @@ export function initExtra() {
     });
 
     arm();
-  }  function runEnergia(next) { after(1000, () => next(null)); }
+  }  
+  
+  
+  // PRUEBA 2: Energía. Resultado: cantidad de pulsos en 5 segundos.
+  function runEnergia(next) {
+    const DURATION = 5000;
+    const core = root.querySelector("#energy-core");
+    const countEl = root.querySelector("#energy-count");
+    const bar = root.querySelector("#energy-bar");
+
+    let count = 0;
+    let started = false;  // el tiempo arranca con el primer pulso
+    let finished = false;
+    let hitId = 0;
+
+    // Estado inicial de la pantalla
+    countEl.textContent = "0";
+    bar.style.width = "100%";
+    timerEl.textContent = "5.00 s";
+    track(() => clearTimeout(hitId));
+
+    function end() {
+      finished = true;
+      core.classList.remove("is-hit");
+      after(1500, () => next(count)); // pasa a la Prueba 3 con el resultado
+    }
+
+    function pulse() {
+      if (finished) return;
+
+      if (!started) {
+        started = true;
+        countdown(DURATION, (left) => { bar.style.width = `${left * 100}%`; }, end);
+      }
+
+      count++;
+      countEl.textContent = String(count);
+
+      // Efecto visual breve en el núcleo
+      core.classList.add("is-hit");
+      clearTimeout(hitId);
+      hitId = setTimeout(() => core.classList.remove("is-hit"), 60);
+    }
+
+    // Clic o toque en el núcleo (pointerdown responde más rápido que click)
+    on(core, "pointerdown", (e) => {
+      if (!e.isTrusted) return; // ignora clics simulados por código
+      e.preventDefault();
+      pulse();
+    });
+
+    // Barra espaciadora
+    on(document, "keydown", (e) => {
+      if (e.code !== "Space" || e.repeat || !e.isTrusted) return; // e.repeat: mantenerla pulsada no cuenta
+      e.preventDefault(); // evita que la página haga scroll
+      pulse();
+    });
+
+    // Evita el menú contextual al mantener el dedo en el celular
+    on(core, "contextmenu", (e) => e.preventDefault());
+  }
+  
   function runCalculo(next) { after(1000, () => next(null)); }
 
   const runners = [runReflejos, runEnergia, runCalculo];
