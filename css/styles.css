@@ -104,3 +104,96 @@
 @media (prefers-reduced-motion: reduce) {
     .goku-aura, .goku-img, .goku-hit, .goku-power { animation: none; }
 }
+
+/* ===== Rastreador de Ki (Scouter) ===== */
+
+/* Marco del visor: borde y brillo verde neón */
+.scouter-frame {
+    overflow: hidden;
+    border: 1px solid rgba(52, 211, 153, 0.35);
+    box-shadow:
+        0 25px 50px -12px rgba(0, 0, 0, 0.6),
+        0 0 40px -8px rgba(52, 211, 153, 0.25),
+        inset 0 0 40px rgba(52, 211, 153, 0.05);
+}
+
+/* Líneas de escaneo tipo monitor antiguo */
+.scouter-scanlines {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(52, 211, 153, 0.05) 0,
+        rgba(52, 211, 153, 0.05) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+    animation: scanMove 6s linear infinite;
+}
+
+@keyframes scanMove {
+    from { background-position: 0 0; }
+    to   { background-position: 0 40px; }
+}
+
+/* Prueba 1: el núcleo cambia de estado (lo controla extra.js con data-state) */
+#reflex-target[data-state="wait"] {
+    border-color: #475569;
+    background: #1e293b;
+    color: #94a3b8;
+}
+
+#reflex-target[data-state="go"] {
+    border-color: #34d399;
+    background: #10b981;
+    color: #022c22;
+    box-shadow: 0 0 50px rgba(52, 211, 153, 0.6);
+    animation: reflexPulse 0.5s ease-in-out infinite alternate;
+}
+
+#reflex-target[data-state="early"] {
+    border-color: #f87171;
+    background: #7f1d1d;
+    color: #fecaca;
+}
+
+@keyframes reflexPulse {
+    from { transform: scale(1); }
+    to   { transform: scale(1.06); }
+}
+
+/* Prueba 2: el núcleo de energía reacciona a cada pulsación */
+.energy-core {
+    box-shadow: 0 0 40px rgba(251, 146, 60, 0.45);
+    transition: transform 0.08s ease-out, box-shadow 0.2s ease;
+    touch-action: manipulation;
+}
+
+.energy-core:active,
+.energy-core.is-hit {
+    transform: scale(0.93);
+    box-shadow: 0 0 70px rgba(251, 146, 60, 0.8);
+}
+
+/* Revelado del Ki final */
+.ki-reveal {
+    animation: kiReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes kiReveal {
+    from { opacity: 0; transform: scale(0.85); filter: blur(6px); }
+    to   { opacity: 1; transform: scale(1);    filter: blur(0); }
+}
+
+/* Accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    .scouter-scanlines,
+    #reflex-target[data-state="go"],
+    .ki-reveal {
+        animation: none;
+    }
+    .energy-core {
+        transition: none;
+    }
+}
