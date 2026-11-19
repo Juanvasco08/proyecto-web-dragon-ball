@@ -73,8 +73,8 @@ export async function initGame() {
 
   // Respuestas (cámbialas por las que prefieras)
   const REPLIES = {
-    si: "¡Eso es! Tu tiempo es oro, y aun así le diste 50 clicks a este reto. Eso es compromiso. 🔥",
-    no: "Al menos eres honesto… pero ya hiciste los 50 clicks, así que algo de valor le viste. 😄",
+    si: "La verdad no se nota el valor que tiene por su timepo",
+    no: "Al menos eres honesto, pero intenta valorarlo",
   };
 
   answerButtons.forEach((btn) => {
@@ -93,6 +93,6 @@ export async function initGame() {
 
   // Recargar la página reinicia el contador seguro desde cero
   replay.addEventListener("click", () => location.reload());
-  
+
   showForm(0);
 }
