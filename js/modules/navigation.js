@@ -2,8 +2,8 @@
 const LINKS = [
   { id: "inicio", label: "Inicio", href: "index.html" },
   { id: "sobre-mi", label: "Sobre Mí", href: "sobre-mi.html" },
-  { id: "juego", label: "Reto Anti-Hack", href: "juego.html" },
-  { id: "innovacion", label: "Innovación", href: "innovacion.html" },
+  { id: "juego", label: "Reto de Clicks", href: "juego.html" },
+  { id: "innovacion", label: "Medidor de KI", href: "innovacion.html" },
   { id: "dragon-ball", label: "Dragon Ball API", href: "dragon-ball.html" },
 ];
 
