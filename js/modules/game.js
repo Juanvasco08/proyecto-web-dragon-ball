@@ -65,5 +65,34 @@ export async function initGame() {
     }
   });
 
+
+    // ---------- Pregunta final: "¿Usted sí valora su tiempo?" ----------
+  const result = $("game-result");
+  const replay = $("game-replay");
+  const answerButtons = final.querySelectorAll("[data-answer]");
+
+  // Respuestas (cámbialas por las que prefieras)
+  const REPLIES = {
+    si: "¡Eso es! Tu tiempo es oro, y aun así le diste 50 clicks a este reto. Eso es compromiso. 🔥",
+    no: "Al menos eres honesto… pero ya hiciste los 50 clicks, así que algo de valor le viste. 😄",
+  };
+
+  answerButtons.forEach((btn) => {
+    btn.addEventListener("click", (event) => {
+      // Solo respuestas reales y solo si el reto ya terminó
+      if (!event.isTrusted || final.classList.contains("hidden")) return;
+
+      answerButtons.forEach((b) => (b.disabled = true));
+      btn.classList.add("ring-2", "ring-amber-400");
+      btn.setAttribute("aria-pressed", "true");
+
+      result.textContent = REPLIES[btn.dataset.answer];
+      replay.classList.remove("hidden");
+    });
+  });
+
+  // Recargar la página reinicia el contador seguro desde cero
+  replay.addEventListener("click", () => location.reload());
+  
   showForm(0);
 }
