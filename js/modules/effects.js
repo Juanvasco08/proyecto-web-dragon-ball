@@ -76,3 +76,38 @@ export function initCounters() {
 
   counters.forEach((el) => observer.observe(el));
 }
+
+export function initSkillBars() {
+  const fills = document.querySelectorAll("[data-skill]");
+  if (!fills.length) return; // solo hay barras en sobre-mi.html
+
+  const fill = (el) => {
+    el.style.width = `${el.dataset.skill}%`;
+  };
+
+  // Si la persona prefiere menos animaciones, las barras aparecen ya llenas
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    fills.forEach((el) => {
+      el.style.transition = "none";
+      fill(el);
+    });
+    return;
+  }
+
+  // Cada barra entra un poquito después que la anterior
+  fills.forEach((el, i) => {
+    el.style.transitionDelay = `${i * 120}ms`;
+  });
+
+  // Se llenan cuando aparecen en pantalla (se observa el contenedor, que sí tiene ancho)
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        fill(entry.target.querySelector("[data-skill]"));
+        observer.unobserve(entry.target); // una sola vez
+      }
+    });
+  }, { threshold: 0.5 });
+
+  fills.forEach((el) => observer.observe(el.parentElement));
+}
