@@ -68,10 +68,12 @@
             <!-- Aparece al terminar los clicks -->
             <div id="game-final" class="hidden mt-8 pt-8 border-t border-white/10">
                 <h2 class="font-display text-2xl font-bold text-white mb-5">¿Usted sí valora su tiempo?</h2>
-                <div class="flex justify-center gap-3">
-                    <button type="button" data-answer="si" class="px-6 py-3 rounded-xl bg-white/5 border border-white/10 font-semibold hover:bg-white/10 transition-all">Sí</button>
-                    <button type="button" data-answer="no" class="px-6 py-3 rounded-xl bg-white/5 border border-white/10 font-semibold hover:bg-white/10 transition-all">No</button>
+                                <div class="flex justify-center gap-3" role="group" aria-label="Responde la pregunta">
+                    <button type="button" data-answer="si" class="min-w-28 px-8 py-3 rounded-xl bg-emerald-500/10 border border-emerald-400/30 text-emerald-400 font-semibold hover:bg-emerald-500/20 hover:-translate-y-0.5 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0 transition-all">Sí</button>
+                    <button type="button" data-answer="no" class="min-w-28 px-8 py-3 rounded-xl bg-red-500/10 border border-red-400/30 text-red-400 font-semibold hover:bg-red-500/20 hover:-translate-y-0.5 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0 transition-all">No</button>
                 </div>
+                <p id="game-result" class="mt-6 text-slate-300 min-h-6" aria-live="polite"></p>
+                <button id="game-replay" type="button" class="hidden mt-6 px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-white font-semibold text-sm hover:bg-white/10 transition-all">Jugar de nuevo</button>
                 <p id="game-result" class="mt-5 text-slate-300 min-h-6" aria-live="polite"></p>
             </div>
 
