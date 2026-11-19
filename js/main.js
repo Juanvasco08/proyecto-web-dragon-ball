@@ -5,6 +5,7 @@ import { initTypewriter, initCounters } from "./modules/effects.js";
 import { initGame } from "./modules/game.js";
 import { initDragonBall } from "./modules/dragonball.js";
 import { initExtra } from "./modules/extra.js";
+import { initTheme } from "./modules/theme.js";
 
 renderLayout();
 initApiMonitor();
@@ -13,3 +14,4 @@ initCounters();
 initGame();
 initDragonBall();
 initExtra();
+initTheme();
